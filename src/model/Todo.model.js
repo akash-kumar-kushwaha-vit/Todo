@@ -1,9 +1,8 @@
 
 import mongoose from "mongoose";
 
-import { boolean } from "webidl-conversions";
 
-const todoSchema = mongoose.Schema({
+const todoSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -13,12 +12,13 @@ const todoSchema = mongoose.Schema({
         required: true,
     },
     status: {
-        type: boolean,
+        type: Boolean,
+
         default: false
     },
 
 
-}, { timeStamp: true })
+}, { timestamps: true })
 
 
 export const Todo = mongoose.model("Todo", todoSchema);

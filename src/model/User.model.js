@@ -1,4 +1,6 @@
-import mongoose, { Collection } from "mongoose";
+import mongoose from "mongoose";
+import bcrypt, { hash } from "bcrypt"
+import jwt from "jsonwebtoken"
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -12,25 +14,25 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
+        required: true
     },
     avtar: {
         type: String,
+        required: true
     },
-    todo: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Todo"
-    }],
     collection: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Collection"
-    }]
+    }],
+    refreshToken: {
+        type: String,
+    }
 
-
-})
+}, { timestamps: true })
 
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return;
-    this.password = await hash(this.password, 10)
+    this.password = await hash(this.password, 10);
 
 });
 

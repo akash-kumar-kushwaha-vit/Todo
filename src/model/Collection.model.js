@@ -2,11 +2,18 @@ import mongoose from "mongoose";
 
 
 const collectionSchema = new mongoose.Schema({
-    title: {
+    collection: {
         type: String,
-        required: true,
     },
-}, { timestamps: true })
+    todos: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Todo"
+    }],
+
+}, {
+    timestamps: true,
+    suppressReservedKeysWarning: true
+})
 
 
 export const Collection = mongoose.model("Collection", collectionSchema);
