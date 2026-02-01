@@ -16,3 +16,6 @@ export const deletetodo = (data) => {
 export const deletecollection = (data) => {
     api.post("/deletecollection", data);
 }
+export const updateTask = (data) => {
+    api.post("/updatetask", data);
+}

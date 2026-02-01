@@ -164,5 +164,33 @@ const deletecollection = asyncHandler(async (req, res) => {
     )
 })
 
+const updateTask = asyncHandler(async (req, res) => {
+    //todo id input
+    //change title discription 
+    // save it
+    const { todoid, title, discription } = req.body;
+    const updatedTodo = await Todo.findByIdAndUpdate(
+        todoid,
+        {
+            $set: {
+                title,
+                discription
+            }
+        }, {
+        new: true,        // return updated document
+        runValidators: true
+    }
 
-export { collectiontodo, collection, changeStatus, deletetodo, deletecollection };
+    )
+    if (!updatedTodo) {
+        throw new ApiError(401, "todo not found!");
+    }
+
+    res.status(200).json(
+        new ApiResponse(201, updatedTodo, "task is updated succssesfully!")
+    )
+
+
+})
+
+export { collectiontodo, collection, changeStatus, deletetodo, deletecollection, updateTask };
