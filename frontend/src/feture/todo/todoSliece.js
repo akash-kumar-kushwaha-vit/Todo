@@ -13,6 +13,7 @@ const intialState = {
 
     }],
     refresh: false,
+    avatar: ""
 
 }
 
@@ -28,8 +29,11 @@ const todoSliece = createSlice({
         },
         refreshpage: (state, action) => {
             state.refresh = action.payload
+        },
+        addAvtar: (state, action) => {
+            state.avatar = action.payload
         }
     }
 })
-export const { addTodo, addCollection, refreshpage } = todoSliece.actions
+export const { addTodo, addCollection, refreshpage, addAvtar } = todoSliece.actions
 export default todoSliece.reducer

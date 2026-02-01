@@ -1,46 +1,48 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
-    return (
-        <nav className="bg-gray-900 text-white shadow-lg">
-            <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    const avtarurl = useSelector((state) => state.avatar);
 
-                {/* Logo */}
-                <h1 className="text-2xl font-extrabold tracking-wide bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+    const defaultAvatar =
+        "https://tse4.mm.bing.net/th/id/OIP.hGSCbXlcOjL_9mmzerqAbQHaHa?pid=Api&P=0&h=180";
+
+    return (
+        <nav className="navbar bg-dark navbar-dark py-3">
+            <div className="container d-flex align-items-center justify-content-between">
+
+                {/* Brand */}
+                <Link to="/" className="navbar-brand fw-bold fs-4">
                     MyApp
-                </h1>
+                </Link>
 
                 {/* Links */}
-                <div className="flex items-center space-x-8 text-sm font-medium">
+                <div className="d-flex align-items-center gap-3">
 
-                    <Link
-                        to="/"
-                        className="relative hover:text-blue-400 transition after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-blue-400 after:transition-all hover:after:w-full"
-                    >
+                    <Link className="nav-link text-white px-3 py-1 rounded hover-bg" to="/">
                         Home
                     </Link>
 
-                    <Link
-                        to="/login"
-                        className="px-4 py-2 rounded-md hover:bg-gray-800 transition"
-                    >
+                    <Link className="nav-link text-white px-3 py-1 rounded" to="/login">
                         Login
                     </Link>
 
-                    <Link
-                        to="/register"
-                        className="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 transition"
-                    >
+                    <Link className="btn btn-outline-info btn-sm" to="/register">
                         Register
                     </Link>
 
-                    <Link
-                        to="/todo"
-                        className="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 transition"
-                    >
-                        todo
+                    <Link className="btn btn-info btn-sm text-dark" to="/todo">
+                        Todo
                     </Link>
 
+                    <img
+                        src={avtarurl && avtarurl.length > 0 ? avtarurl : defaultAvatar}
+                        alt="profile"
+                        width="40"
+                        height="40"
+                        className="rounded-circle border border-secondary"
+                        style={{ objectFit: "cover" }}
+                    />
                 </div>
             </div>
         </nav>

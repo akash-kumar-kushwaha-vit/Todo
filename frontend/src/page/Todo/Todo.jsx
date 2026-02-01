@@ -10,11 +10,15 @@ export default function Todo() {
     const [newcollection, setNewcollection] = useState("");
 
     const rfresh = useSelector((state) => state.refresh);
+
     const dispatch = useDispatch();
 
     const fetchCollections = async () => {
         const response = await getUsers();
+        console.log(response.data);
+
         setCollection(response.data.data[0].collections);
+
     };
 
     const handleNewCollection = async (e) => {
