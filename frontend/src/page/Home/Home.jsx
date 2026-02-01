@@ -9,7 +9,7 @@ export default function Home() {
     const fetchuserdata = async () => {
         const response = await getUsers();
         console.log(response.data);
-        dispatch(addAvtar(response.data.data[0].avtar))
+        dispatch(addAvtar(response.data.data[0].avtar.url))
     };
     useEffect(() => {
         fetchuserdata();

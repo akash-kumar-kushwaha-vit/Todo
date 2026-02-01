@@ -1,11 +1,12 @@
 import { User } from "../model/User.model.js";
 import { ApiError } from "../utility/ApiError.js";
 import { asyncHandler } from "../utility/AsyncHandler.js";
-import uploadCloudinary from "../utility/Cloudnary.js"
+import { deleteFromCloudinary, uploadCloudinary } from "../utility/Cloudnary.js"
 import { ApiResponse } from "../utility/ApiResponse.js"
 import jwt from "jsonwebtoken";
 import { Collection } from "../model/Collection.model.js";
 import mongoose from "mongoose";
+import { upload } from "../middleware/multer.middleware.js";
 
 const generateAccessTokenandrefreshToken = async (userId) => {
     try {
@@ -56,9 +57,13 @@ const register = asyncHandler(async (req, res) => {
         name,
         email,
         password,
-        avtar: cloudinaryresponse.url
+        avtar: {
+            url: cloudinaryresponse.url,
+            public_id: cloudinaryresponse.public_id
+        }
     });
 
+    console.log(cloudinaryresponse.public_id);
 
     res.status(200).json(
         new ApiResponse(200, user, "user registered successfully")
@@ -220,6 +225,40 @@ const fetchuser = asyncHandler(async (req, res) => {
 
 });
 
+const updateAvtar = asyncHandler(async (req, res) => {
+    // take user id
+    //upload file on cloudnary
+    // dlete previous pic 
+    // change avtar 
+    //save it
+    const user = await User.findById(req.user._id);
+
+    let avtarLocalPath;
+    if (req.files && Array.isArray(req.files.avtar) && req.files.avtar.length > 0) {
+        avtarLocalPath = req.files.avtar[0].path;
+    }
+
+    if (!avtarLocalPath) {
+        throw new ApiError(400, "Avatar file is required");
+    }
+
+    await deleteFromCloudinary(user.avtar.public_id);
+    const uploadpic = await uploadCloudinary(avtarLocalPath)
+
+    if (!uploadpic) {
+        throw new ApiError(500, "File upload to cloud failed")
+    }
+
+    user.avtar.url = uploadpic.url;
+    user.avtar.public_id = uploadpic.public_id;
+    await user.save();
+
+    res.status(200).json(
+        new ApiResponse(201, { uploadpic }, "update profile succssfully!")
+    )
 
 
-export { register, login, logout, refreshAccsessToken, fetchuser };
+})
+
+
+export { register, login, logout, refreshAccsessToken, fetchuser, updateAvtar };

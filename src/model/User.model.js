@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt, { hash } from "bcrypt"
 import jwt from "jsonwebtoken"
+import { stringify } from "querystring";
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -17,8 +18,15 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     avtar: {
-        type: String,
-        required: true
+        url: {
+            type: String,
+            required: true,
+        },
+        public_id: {
+            type: String,
+            required: true
+        }
+
     },
     collection: [{
         type: mongoose.Schema.Types.ObjectId,

@@ -151,8 +151,8 @@ export default function Todoitem({ title, todos, fetchcollection }) {
                                     <button
                                         onClick={() => handlestatus(t._id)}
                                         className={`btn btn-sm rounded-pill px-3 ${t.status
-                                                ? "btn-success"
-                                                : "btn-warning text-dark"
+                                            ? "btn-success"
+                                            : "btn-warning text-dark"
                                             }`}
                                     >
                                         {t.status ? "Completed" : "Pending"}
