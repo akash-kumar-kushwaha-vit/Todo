@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { updateAvtar } from "../api/user";
-import { refreshpage } from "../feture/todo/todoSliece";
+import { refreshpage, addAvtar } from "../feture/todo/todoSliece";
+import { fetchUser } from "../feture/globalapi/getuser";
+
 
 export default function Navbar() {
     const avtarurl = useSelector((state) => state.avatar);
@@ -10,7 +12,7 @@ export default function Navbar() {
     const [isprofile, setIsprofile] = useState(false);
     const [avtar, setavtar] = useState(null);
     const dispatch = useDispatch();
-
+    // console.log(avtarurl)
     const defaultAvatar =
         "https://tse4.mm.bing.net/th/id/OIP.hGSCbXlcOjL_9mmzerqAbQHaHa?pid=Api&P=0&h=180";
 
@@ -20,16 +22,21 @@ export default function Navbar() {
 
     const handleupdatepic = async () => {
         if (!avtar) return alert("Please select an image");
-
         const formData = new FormData();
         formData.append("avtar", avtar);
-
         await updateAvtar(formData);
-
         setavtar(null);
         setIsprofile(false);
         dispatch(refreshpage(!refresh));
     };
+
+    useEffect(() => {
+        fetchUser().then((res) => {
+            dispatch(addAvtar(res.data.data[0].avtar))
+        }).catch((error) => {
+            console.log("error", error);
+        })
+    }, [refresh, handleupdatepic])
 
     return (
         <nav className="navbar bg-dark navbar-dark py-3">
@@ -50,7 +57,7 @@ export default function Navbar() {
                     <div className="position-relative">
 
                         <img
-                            src={avtarurl || defaultAvatar}
+                            src={avtarurl.url || defaultAvatar}
                             alt="profile"
                             width="42"
                             height="42"

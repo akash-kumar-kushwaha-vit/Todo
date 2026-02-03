@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { refreshpage } from "../../feture/todo/todoSliece";
 
 
-export default function Todoitem({ title, todos, fetchcollection }) {
+export default function Todoitem({ title, todos, fetchcollection, collectionId }) {
 
     const [open, setOpen] = useState(false);
 
@@ -27,8 +27,7 @@ export default function Todoitem({ title, todos, fetchcollection }) {
         }
 
         await addtast(
-            { title: taskTitle, discription: description },
-            title
+            { title: taskTitle, discription: description, collectionId: collectionId }
         );
 
         setTaskTitle("");
@@ -125,7 +124,7 @@ export default function Todoitem({ title, todos, fetchcollection }) {
                             onChange={(e) => setDescription(e.target.value)}
                         />
 
-                        <button className="btn btn-primary btn-sm w-100">
+                        <button className="btn btn-primary btn-sm w-100" type="submit">
                             Add Todo
                         </button>
                     </form>

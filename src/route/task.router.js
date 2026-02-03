@@ -4,7 +4,7 @@ import { verifyJwt } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
-router.route("/task/:collection").post(verifyJwt, collectiontodo);
+router.route("/task").post(verifyJwt, collectiontodo);
 router.route("/collection").post(verifyJwt, collection);
 router.route("/status").post(verifyJwt, changeStatus);
 router.route("/deletetodo").post(verifyJwt, deletetodo)

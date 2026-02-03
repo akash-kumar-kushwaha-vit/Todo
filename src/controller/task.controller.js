@@ -10,12 +10,12 @@ import mongoose from "mongoose";
 const collectiontodo = asyncHandler(async (req, res) => {
     // take user input 
     // then push into user todos array
-    const { title, discription } = req.body;
+    const { title, discription, collectionId } = req.body;
     if (!(title || discription)) {
         throw new ApiError(104, "all fields are required");
     }
-    const { collection } = req.params;
-    const collectionobj = await Collection.findOne({ collection })
+
+    const collectionobj = await Collection.findById(collectionId)
 
     if (!collectionobj) {
         throw new ApiError(401, "collection not found")

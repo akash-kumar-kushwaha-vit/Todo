@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import Todoitem from "./Todoitem";
 import { createcollection, deletecollection } from "../../api/todo";
 import { useSelector, useDispatch } from "react-redux";
-import { refreshpage } from "../../feture/todo/todoSliece";
-import { getUsers } from "../../api/user";
+import { addAvtar, refreshpage } from "../../feture/todo/todoSliece";
+import { fetchUser } from "../../feture/globalapi/getuser";
 export default function Todo() {
 
     const [collection, setCollection] = useState([]);
@@ -13,13 +13,6 @@ export default function Todo() {
 
     const dispatch = useDispatch();
 
-    const fetchCollections = async () => {
-        const response = await getUsers();
-        console.log(response.data);
-
-        setCollection(response.data.data[0].collections);
-
-    };
 
     const handleNewCollection = async (e) => {
         e.preventDefault();
@@ -38,7 +31,11 @@ export default function Todo() {
     };
 
     useEffect(() => {
-        fetchCollections();
+        fetchUser().then((res) => {
+            // console.log(res.data.data[0].collections)
+            setCollection(res.data.data[0].collections);
+            dispatch(addAvtar)
+        })
     }, [rfresh]);
 
     return (
@@ -94,7 +91,8 @@ export default function Todo() {
                             <Todoitem
                                 todos={col.todos}
                                 title={col.title}
-                                fetchcollection={fetchCollections}
+                                fetchcollection={fetchUser}
+                                collectionId={col._id}
                             />
                         </div>
 
